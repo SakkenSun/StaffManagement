@@ -2,6 +2,7 @@
 
 This is a simple ASP.NET Core Project to work on Staff Management using MVC technology.
 I will also have the demo video that I'll record and post to YouTube and add the link here: 
+https://youtu.be/fRyEz9BYJ4E
 
 To run this project we need to connect to the databse. I have include the database in the Database folder in the StaffDB file that you can import into Microsoft SQL Server. After you import you can connect to the database. 
 After you connect to database you can now run the project from Microsoft Visual Studio.
