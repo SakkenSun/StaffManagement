@@ -10,7 +10,6 @@ builder.Services.AddDbContext<StaffManagement.Models.StaffManagementContext>(Opt
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
