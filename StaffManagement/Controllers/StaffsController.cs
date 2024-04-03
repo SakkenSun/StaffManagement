@@ -39,7 +39,7 @@ namespace StaffManagement.Controllers
             return View(await _context.Staff.ToListAsync());
         }
 
-        // GET: Staffs/Details/5
+        // GET: Staffs/Details
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -64,8 +64,6 @@ namespace StaffManagement.Controllers
         }
 
         // POST: Staffs/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Fullname,BirthDate,Gender")] Staff staff)
@@ -95,9 +93,7 @@ namespace StaffManagement.Controllers
             return View(staff);
         }
 
-        // POST: Staffs/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Staffs/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, [Bind("Id,Fullname,BirthDate,Gender")] Staff staff)
@@ -130,7 +126,7 @@ namespace StaffManagement.Controllers
             return View(staff);
         }
 
-        // GET: Staffs/Delete/5
+        // GET: Staffs/Delete
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -148,7 +144,7 @@ namespace StaffManagement.Controllers
             return View(staff);
         }
 
-        // POST: Staffs/Delete/5
+        // POST: Staffs/Delete
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
@@ -174,12 +170,12 @@ namespace StaffManagement.Controllers
         {
             if (format == "excel")
             {
-                // Use ClosedXML to generate Excel file and return as response
+                // Use ClosedXML to generate Excel file
                 return File(GenerateExcel(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "staff_data.xlsx");
             }
             else if (format == "pdf")
             {
-                // Use iTextSharp to generate PDF file and return as response
+                // Use iTextSharp to generate PDF file
                 return File(GeneratePdf(), "application/pdf", "staff_data.pdf");
             }
             else
@@ -201,7 +197,7 @@ namespace StaffManagement.Controllers
                 worksheet.Cell(1, 4).Value = "Gender";
 
                 int row = 2;
-                foreach (var staff in _context.Staff) // Assuming Model is available in the controller
+                foreach (var staff in _context.Staff)
                 {
                     worksheet.Cell(row, 1).Value = staff.Id;
                     worksheet.Cell(row, 2).Value = staff.Fullname;
@@ -212,7 +208,6 @@ namespace StaffManagement.Controllers
 
                 worksheet.Columns().AdjustToContents();
 
-                // Save the workbook as a byte array
                 using (var memoryStream = new MemoryStream())
                 {
                     workbook.SaveAs(memoryStream);
@@ -226,7 +221,7 @@ namespace StaffManagement.Controllers
         {
             using (var memoryStream = new MemoryStream())
             {
-                using (var document = new Document(PageSize.A4)) // Define document size
+                using (var document = new Document(PageSize.A4))
                 {
                     var writer = PdfWriter.GetInstance(document, memoryStream);
                     document.Open();
@@ -238,8 +233,8 @@ namespace StaffManagement.Controllers
                     document.Add(titleParagraph);
 
                     // Create a PDF table
-                    var table = new PdfPTable(4); // Four columns for staff data
-                    table.WidthPercentage = 80; // Set table width
+                    var table = new PdfPTable(4);
+                    table.WidthPercentage = 80;
 
                     // Add headers to the table
                     table.AddCell(new Phrase("Id", FontFactory.GetFont(FontFactory.HELVETICA_BOLD)));
@@ -248,11 +243,11 @@ namespace StaffManagement.Controllers
                     table.AddCell(new Phrase("Gender", FontFactory.GetFont(FontFactory.HELVETICA_BOLD)));
 
                     // Write staff data to table rows
-                    foreach (var staff in _context.Staff) // Assuming Model is available in the controller
+                    foreach (var staff in _context.Staff)
                     {
                         table.AddCell(new Phrase(staff.Id.ToString()));
                         table.AddCell(new Phrase(staff.Fullname));
-                        table.AddCell(new Phrase(staff.BirthDate.ToString("yyyy-MM-dd"))); // Format date
+                        table.AddCell(new Phrase(staff.BirthDate.ToString("yyyy-MM-dd")));
                         table.AddCell(new Phrase(staff.Gender));
                     }
 
